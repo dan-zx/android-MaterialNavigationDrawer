@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
-        android:src="@drawable/header"/>
+        android:src="@drawable/header_bg"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"

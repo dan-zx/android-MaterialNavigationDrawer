@@ -12,11 +12,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
     private static final String FRAGMENT_TAG = "CURRENT_FRAGMENT";
 
+    private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -24,7 +29,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         RecyclerView drawerOptions = (RecyclerView) findViewById(R.id.drawer_options);
         setSupportActionBar(toolbar);
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -33,7 +38,25 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        List<DrawerItem> drawerItems = Arrays.asList(
+                new DrawerItem(DrawerItem.Type.HEADER),
+                new DrawerMenu().setIconRes(R.drawable.ic_group).setText(getString(R.string.menu_template, 1)),
+                new DrawerMenu().setIconRes(R.drawable.ic_map).setText(getString(R.string.menu_template, 2)),
+                new DrawerItem(DrawerItem.Type.DIVIDER),
+                new DrawerMenu().setIconRes(R.drawable.ic_person).setText(getString(R.string.menu_template, 3)),
+                new DrawerMenu().setIconRes(R.drawable.ic_search).setText(getString(R.string.menu_template, 4)),
+                new DrawerItem(DrawerItem.Type.DIVIDER),
+                new DrawerMenu().setIconRes(R.drawable.ic_settings).setText(getString(R.string.menu_template, 5)));
         drawerOptions.setLayoutManager(new LinearLayoutManager(this));
+        DrawerItemAdapter adapter = new DrawerItemAdapter(drawerItems);
+        adapter.setOnItemClickListener(new DrawerItemAdapter.OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                onDrawerMenuSelected(position);
+            }
+        });
+        drawerOptions.setAdapter(adapter);
+        drawerOptions.setHasFixedSize(true);
         if (savedInstanceState == null) setupFragment(new SimpleFramgment());
     }
 
@@ -63,5 +86,9 @@ public class MainActivity extends ActionBarActivity {
                     .replace(R.id.content_frame, fragment, FRAGMENT_TAG)
                     .commit();
         }
+    }
+
+    private void onDrawerMenuSelected(int position) {
+        drawerLayout.closeDrawers();
     }
 }

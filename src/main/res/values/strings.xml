@@ -2,6 +2,8 @@
 <resources>
     <string name="app_name">Navigation Drawer Sample</string>
     <string name="hello">Hello world!</string>
+    <string name="user_name">User Name</string>
     <string name="drawer_open">Menu Opened</string>
     <string name="drawer_close">Menu Closed</string>
+    <string name="menu_template">Menu %d</string>
 </resources>
